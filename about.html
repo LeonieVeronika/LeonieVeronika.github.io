@@ -96,21 +96,6 @@
             margin-bottom: 15px;
         }
 
-        button {
-            background-color: #e288c4;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        button:hover {
-            background-color: #d25ea5;
-        }
-
         footer {
             background-color: #613352;
             color: #fff;
@@ -128,6 +113,47 @@
             background-position: center;
             background-repeat: repeat;
         }
+
+
+/* Styling for the slideshow container */
+.slideshow-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Styling for cat images */
+.cat-slide {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+/* Styling for navigation dots */
+.dot-container {
+    text-align: center;
+}
+
+.dot {
+    height: 10px;
+    width: 10px;
+    margin: 0 5px;
+    border-radius: 50%;
+    display: inline-block;
+    background-color: #000000;
+    cursor: pointer;
+}
+
+.dot.active {
+    background-color: #fff;
+}
+
     </style>
 </head>
 <body>
@@ -146,11 +172,80 @@
         </div>
     </nav>
     <main>
-        <h2>About the Website</h2>
-        <p>This website is for training purposes >:)</p>
+        <div class="slideshow-container">
+            <img src="CatPicture1.png" alt="Cat 1" class="cat-slide">
+            <img src="CatPicture2.png" alt="Cat 2" class="cat-slide">
+            <img src="CatPicture3.png" alt="Cat 3" class="cat-slide">
+        </div>
+        <div class="dot-container">
+            <!-- Dots for navigation will be added dynamically by JavaScript -->
+        </div>
     </main>
     <footer>
         <p>&copy; I love my boyfriend <3. All rights reserved.</p>
     </footer>
+    <script>
+        const catSlides = document.querySelectorAll('.cat-slide');
+        const dotsContainer = document.querySelector('.dot-container');
+        let slideIndex = 0;
+
+        // Function to show a cat slide
+        function showSlide(index) {
+            if (index < 0) {
+                slideIndex = catSlides.length - 1;
+            } else if (index >= catSlides.length) {
+                slideIndex = 0;
+            }
+
+            catSlides.forEach((slide) => {
+                slide.style.display = 'none';
+                slide.style.opacity = 0;
+            });
+
+            catSlides[slideIndex].style.display = 'block';
+            catSlides[slideIndex].style.opacity = 1;
+            updateDots();
+        }
+
+        // Function to switch to the next slide
+        function nextSlide() {
+            showSlide(slideIndex + 1);
+        }
+
+        // Function to switch to the previous slide
+        function prevSlide() {
+            showSlide(slideIndex - 1);
+        }
+
+        // Function to handle dot navigation
+        function navigateToSlide(index) {
+            showSlide(index);
+        }
+
+        // Create dots for navigation
+        function createDots() {
+            for (let i = 0; i < catSlides.length; i++) {
+                const dot = document.createElement('span');
+                dot.classList.add('dot');
+                dot.addEventListener('click', () => navigateToSlide(i));
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        // Update active dot
+        function updateDots() {
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === slideIndex);
+            });
+        }
+
+        // Show the initial slide and create dots
+        showSlide(slideIndex);
+        createDots();
+
+        // Auto advance the slideshow every 5 seconds
+        setInterval(nextSlide, 5000);
+    </script>
 </body>
 </html>
